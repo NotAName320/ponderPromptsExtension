@@ -1,14 +1,23 @@
+<!DOCTYPE html>
 <html lang="en">
+    <head>
+        <script src="main.js"></script>
+        <link rel="stylesheet" href="main.css">
+        <title>Ponder Prompts</title>
+    </head>
     <body>
         <h1>Welcome to PonderPrompts!</h1>
 
         <p id="timerDisplay"></p>
 
-        <label for="minutes">Time (mm:ss):</label>
-        <input type="text" id="minutes" name="minutes" maxlength="2" style="width: 25px">
-        <label for="seconds">:</label>
-        <input type="text" id="seconds" name="seconds" maxlength="2" style="width: 25px">
+        <h1 id="timer">0:00</h1>
 
-        <script src="main.js"></script>
+        <label for="minutes">Time (mm:ss):</label>
+        <input type="number" class="minMax" min="0" max="59" id="minutes" name="minutes" maxlength="2"
+               style="width: 25px">
+        <label for="seconds">:</label>
+        <input type="number" class="minMax" min="0" max="59" id="seconds" name="seconds" maxlength="2"
+               style="width: 25px"><br>
+        <button>Start Timer</button>
     </body>
 </html>

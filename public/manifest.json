@@ -3,8 +3,18 @@
   "description": "this is a test.",
   "version": "0",
   "manifest_version": 3,
-  "permissions": [],
+  "permissions": ["scripting"],
   "action": {
-    "default_popup": "./src/main.html"
-  }
+    "default_popup": "./main.html"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "*://*/*"
+      ],
+      "js": [
+        "main.js"
+      ]
+    }
+  ]
 }
