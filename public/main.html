@@ -1,25 +1,33 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
+<head>
+    <!-- Links to main.js for main functionalities and main.css for styling,
+    and creates the title of the extension -->
         <script src="main.js"></script>
         <link rel="stylesheet" href="main.css">
         <title>Ponder Prompts</title>
     </head>
     <body>
-        <h1>Welcome to PonderPrompts!</h1>
+    <h1>Welcome to PonderPrompts!</h1>
 
-        <p id="timerDisplay"></p>
+    <p id="timerDisplay"></p>
 
-        <h1 id="timer">0:00</h1>
+    <!-- Displays the initial timer value-->
+    <h1 id="timer">0:00</h1>
 
-        <label for="minutes">Time (mm:ss):</label>
-        <input type="number" class="minMax" min="0" max="59" id="minutes" name="minutes" maxlength="2"
-               style="width: 25px">
-        <label for="seconds">:</label>
-        <input type="number" class="minMax" min="0" max="59" id="seconds" name="seconds" maxlength="2"
-               style="width: 25px"><br>
-        <button id="startButton">Start Timer</button>
-        <button id="stopButton">Stop Timer</button>
-        <script src="timer.js"></script>
-    </body>
+    <!-- Input fields for seconds, allowing values from 0 to 59, and their labels-->
+    <label for="minutes">Time (mm:ss):</label>
+    <input type="number" class="minMax" min="0" max="59" id="minutes" name="minutes" maxlength="2"
+           style="width: 25px">
+    <label for="seconds">:</label>
+    <input type="number" class="minMax" min="0" max="59" id="seconds" name="seconds" maxlength="2"
+           style="width: 25px"><br>
+
+    <!-- start and stop buttons -->
+    <button id="startButton">Start Timer</button>
+    <button id="stopButton">Stop Timer</button>
+
+    <!-- Links to timer.js for timer functionality-->
+    <script src="timer.js"></script>
+</body>
 </html>
