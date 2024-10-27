@@ -1,4 +1,6 @@
 # Ponder Prompts Extension
+Ponder Prompts Extension is a web extension that features a simple timer.
+Additional functionalities will be added in the future.
 ## How to Run the Extension
 - Before you do anything, make sure all the dependencies are installed 
 that are located the package-lock.json with npm.
@@ -21,3 +23,5 @@ Chrome:
 <p align="center">
 <img src="images/chrome load unpacked.png" alt ="Chrome"/>
 </p>
+
+#### Ponder Prompts Extension uses the MIT license.
