@@ -30,7 +30,7 @@ class Main {
     }
 
     /**
-     * Moves the cursor focus to the seconds input when the HTMLInputElement reaches 3 or more characters.
+     * Moves the cursor focus on the seconds input when the HTMLInputElement reaches 3 or more characters.
      * @param this - the HTMLInputElement where the event occurred.
      */
     moveCursor(this: HTMLInputElement): any {
@@ -40,7 +40,7 @@ class Main {
     }
 
     /**
-     * Moves the cursor focus back to the minutes input if the user presses backspace and the HTMLInputElement empty.
+     * Moves the cursor focus back on the minutes input if the user presses backspace and the HTMLInputElement empty.
      * @param this - The HTMLInputElement where the event occurred.
      * @param ev - The keyboard event that triggered this function.
      */
