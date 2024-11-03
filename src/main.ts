@@ -1,5 +1,4 @@
 import $ from 'jquery'
-import KeyUpEvent = JQuery.KeyUpEvent;
 
 class Main {
     constructor() {
@@ -13,7 +12,6 @@ class Main {
             let self = this;
             $(".minMax").each(function () {
                 this.addEventListener("keyup", self.enforceMinMax);
-                console.log("asdf")
             })
         });
     }
