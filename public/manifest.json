@@ -6,15 +6,5 @@
   "permissions": ["scripting"],
   "action": {
     "default_popup": "./main.html"
-  },
-  "content_scripts": [
-    {
-      "matches": [
-        "*://*/*"
-      ],
-      "js": [
-        "main.js"
-      ]
-    }
-  ]
+  }
 }
