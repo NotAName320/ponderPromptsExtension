@@ -16,9 +16,24 @@ class Main {
             minBox[0].addEventListener("keydown", this.moveCursor);
             secBox[0].addEventListener("keydown", this.moveCursorBack);
             secBox[0].addEventListener("keydown", this.secondsMax);
+
             let self = this;
             $(".numeric").each(function () {
                 this.addEventListener("keydown", self.evalNumeric);
+            });
+
+            $(".persist").each(function () {
+                chrome.storage.local.get([this.id]).then((result) => {
+                    if(typeof result[this.id] === "undefined") {
+                        (<HTMLInputElement>this).value = "";
+                    } else {
+                        (<HTMLInputElement>this).value = result[this.id];
+                    }
+                }, (_) => {
+                    (<HTMLInputElement>this).value = "";
+                });
+
+                this.addEventListener("input", self.storePersist);
             });
         });
     }
@@ -54,6 +69,10 @@ class Main {
             event.preventDefault();
             event.stopPropagation();
         }
+    }
+
+    storePersist(this: HTMLInputElement) {
+        chrome.storage.local.set({ [this.id]: this.value }).then();
     }
 }
 
