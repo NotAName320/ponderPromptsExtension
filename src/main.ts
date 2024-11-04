@@ -1,5 +1,9 @@
 import $ from 'jquery'
 
+
+const FIRST_FIVE = new Set(["0", "1", "2", "3", "4", "5"]);
+const NUMERALS = new Set(["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]);
+
 class Main {
     constructor() {
         this.init();
@@ -7,41 +11,50 @@ class Main {
 
     init() {
         $(() => {
-            $("#minutes")[0].addEventListener("keyup", this.moveCursor);
-            $("#seconds")[0].addEventListener("keyup", this.moveCursorBack);
+            let minBox = $("#minutes");
+            let secBox = $("#seconds");
+            minBox[0].addEventListener("keydown", this.moveCursor);
+            secBox[0].addEventListener("keydown", this.moveCursorBack);
+            secBox[0].addEventListener("keydown", this.secondsMax);
             let self = this;
-            $(".minMax").each(function () {
-                this.addEventListener("keyup", self.enforceMinMax);
-            })
+            $(".numeric").each(function () {
+                this.addEventListener("keydown", self.evalNumeric);
+            });
         });
     }
 
-    moveCursor(this: HTMLInputElement): any {
-        if(this.value.length >= 3) {
+    moveCursor(this: HTMLElement, event: KeyboardEvent): any {
+        if(event.key === "Backspace") return;
+        if((<HTMLInputElement>this).value.length >= 2) {
             $("#seconds").trigger("focus");
+            if(!FIRST_FIVE.has(event.key)) {
+                // If key would make invalid seconds value
+                event.preventDefault();
+            }
         }
     }
 
-    moveCursorBack(this: HTMLElement, ev: KeyboardEvent): any {
-        if (ev.code !== "Backspace") return;
+    moveCursorBack(this: HTMLElement, event: KeyboardEvent): any {
+        if(event.key !== "Backspace") return;
         if((<HTMLInputElement>this).value.length === 0) {
             $("#minutes").trigger("focus");
         }
     }
 
-    enforceMinMax(this: HTMLInputElement) {
-        if (this.value != "" && this.value != ".") {
-            //chop off decimal
-            this.value = String(parseInt(this.value));
-            if (parseInt(this.value) < parseInt(this.min)) {
-                this.value = String(Math.floor(parseInt(this.value) / 10));
-            }
-            if (parseInt(this.value) > parseInt(this.max)) {
-                this.value = String(Math.floor(parseInt(this.value) / 10));
-            }
+    evalNumeric(this: HTMLElement, event: KeyboardEvent) {
+        if(!NUMERALS.has(event.key) && event.key !== "Backspace")
+        {
+            event.preventDefault();
+            event.stopPropagation();
         }
     }
 
+    secondsMax(this: HTMLElement, event: KeyboardEvent) {
+        if((<HTMLInputElement>this).value.length === 0 && !FIRST_FIVE.has(event.key)) {
+            event.preventDefault();
+            event.stopPropagation();
+        }
+    }
 }
 
 new Main();

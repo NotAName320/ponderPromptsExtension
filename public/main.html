@@ -13,11 +13,10 @@
         <h1 id="timer">0:00</h1>
 
         <label for="minutes">Time (mm:ss):</label>
-        <input type="number" class="minMax" min="0" max="59" id="minutes" name="minutes" maxlength="2"
-               style="width: 25px">
+        <input type="text" class="numeric" id="minutes" name="minutes" style="width: 25px">
         <label for="seconds">:</label>
-        <input type="number" class="minMax" min="0" max="59" id="seconds" name="seconds" maxlength="2"
-               style="width: 25px"><br>
+        <input type="text" class="numeric" id="seconds" name="seconds" maxlength="2" style="width: 25px">
+        <br>
         <button id="startButton">Start Timer</button>
         <button id="stopButton">Stop Timer</button>
         <script src="timer.js"></script>
