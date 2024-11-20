@@ -4,6 +4,7 @@ module.exports = {
     mode: "production",
     entry: {
         main: path.resolve(__dirname, "..", "src", "main.ts"),
+        timer: path.resolve(__dirname, "..", "src", "timer.ts"),
     },
     output: {
         path: path.join(__dirname, "../dist"),

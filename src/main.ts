@@ -4,18 +4,26 @@ import $ from 'jquery'
 const FIRST_FIVE = new Set(["0", "1", "2", "3", "4", "5"]);
 const NUMERALS = new Set(["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]);
 
+
 class Main {
+    minBox: JQuery = $()
+    secBox: JQuery = $()
+    startButton: JQuery = $()
+
     constructor() {
         this.init();
     }
 
     init() {
         $(() => {
-            let minBox = $("#minutes");
-            let secBox = $("#seconds");
-            minBox[0].addEventListener("keydown", this.moveCursor);
-            secBox[0].addEventListener("keydown", this.moveCursorBack);
-            secBox[0].addEventListener("keydown", this.secondsMax);
+            this.minBox = $("#minutes");
+            this.secBox = $("#seconds");
+            this.startButton = $("#startButton");
+
+            this.minBox[0].addEventListener("keydown", this.moveCursor);
+            this.secBox[0].addEventListener("keydown", this.moveCursorBack);
+            this.secBox[0].addEventListener("keydown", this.secondsMax);
+            this.startButton[0].addEventListener("click", this.startTimer);
 
             let self = this;
             $(".numeric").each(function () {
@@ -41,6 +49,7 @@ class Main {
     moveCursor(this: HTMLElement, event: KeyboardEvent): any {
         if(event.key === "Backspace") return;
         if((<HTMLInputElement>this).value.length >= 2) {
+            // this is messy but we can't access secBox or minBox in here so we just have to rejiggle the selector
             $("#seconds").trigger("focus");
             if(!FIRST_FIVE.has(event.key)) {
                 // If key would make invalid seconds value
@@ -69,6 +78,12 @@ class Main {
             event.preventDefault();
             event.stopPropagation();
         }
+    }
+
+    startTimer() {
+        let mins = Number($("#minutes").val());
+        let secs = Number($("#seconds").val());
+        console.log(mins * 60 + secs);
     }
 
     storePersist(this: HTMLInputElement) {
