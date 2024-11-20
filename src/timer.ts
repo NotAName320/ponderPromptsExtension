@@ -15,13 +15,18 @@ class Timer {
         });
 
         chrome.runtime.onStartup.addListener(this.createOffscreen);
+        this.createOffscreen().then();
 
         let that = this;
         chrome.alarms.onAlarm.addListener(function (alarm) {
             if(alarm.name === 'timer') {
                 that.onTimer();
             }
-        })
+        });
+
+        chrome.runtime.onMessage.addListener(function () {
+            //just keepalive for now
+        });
     }
 
     newTimer(target: number) {
