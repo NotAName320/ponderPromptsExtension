@@ -27,7 +27,7 @@ class Main {
      * These listeners are added for keyup events on the minutes and seconds input fields
      * and on each element with the class minMax.
      */
-    init() {
+    init(): void {
         $(() => {
             this.minBox = $("#minutes");
             this.secBox = $("#seconds");
@@ -73,7 +73,7 @@ class Main {
 
     /**
      * Moves the cursor focus on the seconds input when the HTMLInputElement reaches 3 or more characters.
-     * @param event - The keyboard event that triggered this function.
+     * @param {KeyboardEvent} event - The keyboard event that triggered this function.
      */
     moveCursor(this: HTMLElement, event: KeyboardEvent): any {
         if(event.key === "Backspace") return;
@@ -89,7 +89,7 @@ class Main {
 
     /**
      * Moves the cursor focus back on the minutes input if the user presses backspace and the HTMLInputElement empty.
-     * @param event - The keyboard event that triggered this function.
+     * @param {KeyboardEvent} event - The keyboard event that triggered this function.
      */
     moveCursorBack(this: HTMLElement, event: KeyboardEvent): any {
         if(event.key !== "Backspace") return;
@@ -100,7 +100,7 @@ class Main {
 
     /**
      * Establishes min and max values, trims the decimal, and ensures the value is an integer for the input value.
-     * @param event - The keyboard event that triggered this function.
+     * @param {KeyboardEvent} event - The keyboard event that triggered this function.
      */
     evalNumeric(this: HTMLElement, event: KeyboardEvent) {
         if(!NUMERALS.has(event.key) && event.key !== "Backspace")
@@ -110,14 +110,21 @@ class Main {
         }
     }
 
-    secondsMax(this: HTMLElement, event: KeyboardEvent) {
+    /**
+     * Check that the seconds value is valid, i.e. cannot be more than 59 seconds.
+     * @param {KeyboardEvent} event
+     */
+    secondsMax(this: HTMLElement, event: KeyboardEvent): void {
         if((<HTMLInputElement>this).value.length === 0 && !FIRST_FIVE.has(event.key)) {
             event.preventDefault();
             event.stopPropagation();
         }
     }
 
-    startTimer() {
+    /**
+     * Starts the timer, notifying the background service and setting the display timer's value.
+     */
+    startTimer(): void {
         let mins = Number($("#minutes").val());
         let secs = Number($("#seconds").val());
         console.log(mins * 60 + secs);
@@ -126,13 +133,18 @@ class Main {
         $("#timer").text(`${mins}:${secString}`);
     }
 
-    storePersist(this: HTMLInputElement) {
+    /**
+     * Automatically store any persistent values in local storage.
+     */
+    storePersist(this: HTMLInputElement): void {
         chrome.storage.local.set({ [this.id]: this.value }).then();
     }
 }
 
-
-function timerCountdown() {
+/**
+ * Processes the display timer. If timer is at 0, does nothing. Set to run every second in Main initialization.
+ */
+function timerCountdown(): void {
     let timerElement = $("#timer");
     let timerText = timerElement.text().split(":");
     let mins = Number(timerText[0]);
