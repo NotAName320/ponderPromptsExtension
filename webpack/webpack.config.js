@@ -9,6 +9,7 @@ module.exports = {
     // Entry point for the extension
     entry: {
         main: path.resolve(__dirname, "..", "src", "main.ts"),
+        timer: path.resolve(__dirname, "..", "src", "timer.ts"),
     },
     // Output configuration for the built files
     output: {

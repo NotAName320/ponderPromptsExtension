@@ -3,18 +3,11 @@
   "description": "this is a test.",
   "version": "0",
   "manifest_version": 3,
-  "permissions": ["scripting"],
+  "permissions": ["alarms", "offscreen", "scripting", "storage"],
   "action": {
     "default_popup": "./main.html"
   },
-  "content_scripts": [
-    {
-      "matches": [
-        "*://*/*"
-      ],
-      "js": [
-        "main.js"
-      ]
-    }
-  ]
+  "background": {
+    "service_worker": "timer.js"
+  }
 }
