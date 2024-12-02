@@ -39,7 +39,6 @@ class Main {
             this.secBox[0].addEventListener("keydown", this.secondsMax);
             this.startButton[0].addEventListener("click", this.startTimer);
 
-            //const self = this;
             $(".numeric").each((_, element) => {
                 element.addEventListener("keydown", this.evalNumeric);
             });
