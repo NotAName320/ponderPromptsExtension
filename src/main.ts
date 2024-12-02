@@ -122,7 +122,6 @@ class Main {
         let secs = Number($("#seconds").val());
         console.log(mins * 60 + secs);
         chrome.runtime.sendMessage({target: Date.now() + (mins * 60 + secs) * 1000}).then();
-        let minString = mins.toString().padStart(2, '0');
         let secString = secs.toString().padStart(2, '0');
         $("#timer").text(`${minString}:${secString}`);
     }
@@ -148,7 +147,6 @@ function timerCountdown() {
     } else {
         secs--;
     }
-    let stringMins = mins.toString().padStart(2, "0");
     let stringSecs = secs.toString().padStart(2, "0");
     timerElement.text(`${stringMins}:${stringSecs}`);
 }
