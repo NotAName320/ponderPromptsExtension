@@ -9,6 +9,8 @@ class Main {
     minBox: JQuery = $()
     secBox: JQuery = $()
     startButton: JQuery = $()
+    timerDisplay: JQuery = $()
+    timerUpdaterId: number = 0;
 
     constructor() {
         this.init();
@@ -19,6 +21,7 @@ class Main {
             this.minBox = $("#minutes");
             this.secBox = $("#seconds");
             this.startButton = $("#startButton");
+            this.timerDisplay = $("#timer");
 
             this.minBox[0].addEventListener("keydown", this.moveCursor);
             this.secBox[0].addEventListener("keydown", this.moveCursorBack);
@@ -44,6 +47,16 @@ class Main {
                 this.addEventListener("input", self.storePersist);
             });
         });
+
+        chrome.storage.local.get(['target']).then( (result) => {
+            if(typeof result['target'] !== "undefined") {
+                let timeDiff = Math.floor((result['target'] - Date.now()) / 1000);
+                let mins =  Math.floor(timeDiff / 60);
+                let secs = (timeDiff % 60).toString().padStart(2, "0");
+                $("#timer").text(`${mins}:${secs}`);
+            }
+        });
+        this.timerUpdaterId = window.setInterval(() => timerCountdown(), 1000);
     }
 
     moveCursor(this: HTMLElement, event: KeyboardEvent): any {
@@ -84,11 +97,37 @@ class Main {
         let mins = Number($("#minutes").val());
         let secs = Number($("#seconds").val());
         console.log(mins * 60 + secs);
+        chrome.runtime.sendMessage({target: Date.now() + (mins * 60 + secs) * 1000}).then();
+        let minString = mins.toString().padStart(2, '0');
+        let secString = secs.toString().padStart(2, '0');
+        $("#timer").text(`${minString}:${secString}`);
     }
 
     storePersist(this: HTMLInputElement) {
         chrome.storage.local.set({ [this.id]: this.value }).then();
     }
 }
+
+
+function timerCountdown() {
+    let timerElement = $("#timer");
+    let timerText = timerElement.text().split(":");
+    let mins = Number(timerText[0]);
+    let secs = Number(timerText[1]);
+    if(secs === 0) {
+        if(mins === 0) {
+            return;
+        } else {
+            secs = 59;
+            mins--;
+        }
+    } else {
+        secs--;
+    }
+    let stringMins = mins.toString().padStart(2, "0");
+    let stringSecs = secs.toString().padStart(2, "0");
+    timerElement.text(`${stringMins}:${stringSecs}`);
+}
+
 
 new Main();

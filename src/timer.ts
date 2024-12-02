@@ -24,12 +24,17 @@ class Timer {
             }
         });
 
-        chrome.runtime.onMessage.addListener(function () {
-            //just keepalive for now
+        chrome.runtime.onMessage.addListener(function (message, sender) {
+            if(sender.url?.endsWith("main.html")) {
+                if(typeof message['target'] !== "undefined") {
+                    that.newTimer(message['target']);
+                }
+            }
         });
     }
 
     newTimer(target: number) {
+        if(this.targetTime === -1) return;
         this.targetTime = target;
         chrome.storage.local.set({ target: target }).then();
 
@@ -37,7 +42,8 @@ class Timer {
     }
 
     onTimer() {
-        console.log('test');
+        chrome.storage.local.remove("target").then();
+        this.targetTime = -1;
     }
 
     async createOffscreen() {
