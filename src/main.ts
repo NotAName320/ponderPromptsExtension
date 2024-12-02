@@ -123,7 +123,7 @@ class Main {
         console.log(mins * 60 + secs);
         chrome.runtime.sendMessage({target: Date.now() + (mins * 60 + secs) * 1000}).then();
         let secString = secs.toString().padStart(2, '0');
-        $("#timer").text(`${minString}:${secString}`);
+        $("#timer").text(`${mins}:${secString}`);
     }
 
     storePersist(this: HTMLInputElement) {
@@ -148,7 +148,7 @@ function timerCountdown() {
         secs--;
     }
     let stringSecs = secs.toString().padStart(2, "0");
-    timerElement.text(`${stringMins}:${stringSecs}`);
+    timerElement.text(`${mins}:${stringSecs}`);
 }
 
 // Instantiates the Main class to activate the event listeners
