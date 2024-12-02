@@ -73,7 +73,7 @@ class Main {
 
     /**
      * Moves the cursor focus on the seconds input when the HTMLInputElement reaches 3 or more characters.
-     * @param this - the HTMLInputElement where the event occurred.
+     * @param event - The keyboard event that triggered this function.
      */
     moveCursor(this: HTMLElement, event: KeyboardEvent): any {
         if(event.key === "Backspace") return;
@@ -89,8 +89,7 @@ class Main {
 
     /**
      * Moves the cursor focus back on the minutes input if the user presses backspace and the HTMLInputElement empty.
-     * @param this - The HTMLInputElement where the event occurred.
-     * @param ev - The keyboard event that triggered this function.
+     * @param event - The keyboard event that triggered this function.
      */
     moveCursorBack(this: HTMLElement, event: KeyboardEvent): any {
         if(event.key !== "Backspace") return;
@@ -101,7 +100,7 @@ class Main {
 
     /**
      * Establishes min and max values, trims the decimal, and ensures the value is an integer for the input value.
-     * @param this - The HTMLInputElement where the event occurred.
+     * @param event - The keyboard event that triggered this function.
      */
     evalNumeric(this: HTMLElement, event: KeyboardEvent) {
         if(!NUMERALS.has(event.key) && event.key !== "Backspace")
