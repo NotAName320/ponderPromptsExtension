@@ -1,23 +1,28 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <script src="main.js"></script>
-        <link rel="stylesheet" href="main.css">
-        <title>Ponder Prompts</title>
-    </head>
-    <body>
-        <h1>Welcome to PonderPrompts!</h1>
+  <head>
+    <!-- Links to main.js for main functionalities and main.css for styling,
+    and creates the title of the extension -->
+    <script src="main.js"></script>
+    <link rel="stylesheet" href="main.css">
+    <title>Ponder Prompts</title>
+  </head>
+  <body>
+    <h1>Welcome to PonderPrompts!</h1>
 
-        <p id="timerDisplay"></p>
+    <p id="timerDisplay"></p>
 
-        <h1 id="timer">0:00</h1>
-
-        <label for="minutes">Time (mm:ss):</label>
-        <input type="text" class="numeric persist" id="minutes" name="minutes" style="width: 25px">
-        <label for="seconds">:</label>
-        <input type="text" class="numeric persist" id="seconds" name="seconds" maxlength="2" style="width: 25px">
-        <br>
-        <button id="startButton">Start Timer</button>
-        <button id="stopButton">Stop Timer</button>
-    </body>
+    <!-- Displays the initial timer value-->
+    <h1 id="timer">0:00</h1>
+      
+    <!-- Input fields for seconds, allowing values from 0 to 59, and their labels-->
+    <label for="minutes">Time (mm:ss):</label>
+    <input type="text" class="numeric persist" id="minutes" name="minutes" style="width: 25px">
+    <label for="seconds">:</label>
+    <input type="text" class="numeric persist" id="seconds" name="seconds" maxlength="2" style="width: 25px">
+    <br>
+    <!-- start and stop buttons -->
+    <button id="startButton">Start Timer</button>
+    <button id="stopButton">Stop Timer</button>
+  </body>
 </html>

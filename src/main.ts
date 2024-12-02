@@ -5,7 +5,13 @@ const FIRST_FIVE = new Set(["0", "1", "2", "3", "4", "5"]);
 const NUMERALS = new Set(["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]);
 
 
+/**
+ * Main class responsible for handling user input in the timer extension.
+ * This class initializes event listeners for the html input fields to manage the focus
+ * and establishes minimum and maximum values.
+ */
 class Main {
+    // Initialize the class by setting up event listeners.
     minBox: JQuery = $()
     secBox: JQuery = $()
     startButton: JQuery = $()
@@ -16,6 +22,11 @@ class Main {
         this.init();
     }
 
+    /**
+     * Sets up event listeners for the html input fields.
+     * These listeners are added for keyup events on the minutes and seconds input fields
+     * and on each element with the class minMax.
+     */
     init() {
         $(() => {
             this.minBox = $("#minutes");
@@ -59,6 +70,11 @@ class Main {
         this.timerUpdaterId = window.setInterval(() => timerCountdown(), 1000);
     }
 
+
+    /**
+     * Moves the cursor focus on the seconds input when the HTMLInputElement reaches 3 or more characters.
+     * @param this - the HTMLInputElement where the event occurred.
+     */
     moveCursor(this: HTMLElement, event: KeyboardEvent): any {
         if(event.key === "Backspace") return;
         if((<HTMLInputElement>this).value.length >= 2) {
@@ -71,6 +87,11 @@ class Main {
         }
     }
 
+    /**
+     * Moves the cursor focus back on the minutes input if the user presses backspace and the HTMLInputElement empty.
+     * @param this - The HTMLInputElement where the event occurred.
+     * @param ev - The keyboard event that triggered this function.
+     */
     moveCursorBack(this: HTMLElement, event: KeyboardEvent): any {
         if(event.key !== "Backspace") return;
         if((<HTMLInputElement>this).value.length === 0) {
@@ -78,6 +99,10 @@ class Main {
         }
     }
 
+    /**
+     * Establishes min and max values, trims the decimal, and ensures the value is an integer for the input value.
+     * @param this - The HTMLInputElement where the event occurred.
+     */
     evalNumeric(this: HTMLElement, event: KeyboardEvent) {
         if(!NUMERALS.has(event.key) && event.key !== "Backspace")
         {
@@ -129,5 +154,5 @@ function timerCountdown() {
     timerElement.text(`${stringMins}:${stringSecs}`);
 }
 
-
+// Instantiates the Main class to activate the event listeners
 new Main();
