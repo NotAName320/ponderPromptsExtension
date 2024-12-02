@@ -39,31 +39,31 @@ class Main {
             this.secBox[0].addEventListener("keydown", this.secondsMax);
             this.startButton[0].addEventListener("click", this.startTimer);
 
-            let self = this;
-            $(".numeric").each(function () {
-                this.addEventListener("keydown", self.evalNumeric);
+            //const self = this;
+            $(".numeric").each((_, element) => {
+                element.addEventListener("keydown", this.evalNumeric);
             });
 
-            $(".persist").each(function () {
-                chrome.storage.local.get([this.id]).then((result) => {
-                    if(typeof result[this.id] === "undefined") {
-                        (<HTMLInputElement>this).value = "";
+            $(".persist").each((_, element) => {
+                chrome.storage.local.get([element.id]).then((result) => {
+                    if(typeof result[element.id] === "undefined") {
+                        (<HTMLInputElement>element).value = "";
                     } else {
-                        (<HTMLInputElement>this).value = result[this.id];
+                        (<HTMLInputElement>element).value = result[element.id];
                     }
-                }, (_) => {
-                    (<HTMLInputElement>this).value = "";
+                }, () => {
+                    (<HTMLInputElement>element).value = "";
                 });
 
-                this.addEventListener("input", self.storePersist);
+                element.addEventListener("input", this.storePersist);
             });
         });
 
         chrome.storage.local.get(['target']).then( (result) => {
             if(typeof result['target'] !== "undefined") {
-                let timeDiff = Math.floor((result['target'] - Date.now()) / 1000);
-                let mins =  Math.floor(timeDiff / 60);
-                let secs = (timeDiff % 60).toString().padStart(2, "0");
+                const timeDiff = Math.floor((result['target'] - Date.now()) / 1000);
+                const mins =  Math.floor(timeDiff / 60);
+                const secs = (timeDiff % 60).toString().padStart(2, "0");
                 $("#timer").text(`${mins}:${secs}`);
             }
         });
@@ -75,7 +75,7 @@ class Main {
      * Moves the cursor focus on the seconds input when the HTMLInputElement reaches 3 or more characters.
      * @param {KeyboardEvent} event - The keyboard event that triggered this function.
      */
-    moveCursor(this: HTMLElement, event: KeyboardEvent): any {
+    moveCursor(this: HTMLElement, event: KeyboardEvent): void {
         if(event.key === "Backspace") return;
         if((<HTMLInputElement>this).value.length >= 2) {
             // this is messy but we can't access secBox or minBox in here so we just have to rejiggle the selector
@@ -91,7 +91,7 @@ class Main {
      * Moves the cursor focus back on the minutes input if the user presses backspace and the HTMLInputElement empty.
      * @param {KeyboardEvent} event - The keyboard event that triggered this function.
      */
-    moveCursorBack(this: HTMLElement, event: KeyboardEvent): any {
+    moveCursorBack(this: HTMLElement, event: KeyboardEvent): void {
         if(event.key !== "Backspace") return;
         if((<HTMLInputElement>this).value.length === 0) {
             $("#minutes").trigger("focus");
@@ -102,7 +102,7 @@ class Main {
      * Establishes min and max values, trims the decimal, and ensures the value is an integer for the input value.
      * @param {KeyboardEvent} event - The keyboard event that triggered this function.
      */
-    evalNumeric(this: HTMLElement, event: KeyboardEvent) {
+    evalNumeric(this: HTMLElement, event: KeyboardEvent): void {
         if(!NUMERALS.has(event.key) && event.key !== "Backspace")
         {
             event.preventDefault();
@@ -125,11 +125,11 @@ class Main {
      * Starts the timer, notifying the background service and setting the display timer's value.
      */
     startTimer(): void {
-        let mins = Number($("#minutes").val());
-        let secs = Number($("#seconds").val());
+        const mins = Number($("#minutes").val());
+        const secs = Number($("#seconds").val());
         console.log(mins * 60 + secs);
         chrome.runtime.sendMessage({target: Date.now() + (mins * 60 + secs) * 1000}).then();
-        let secString = secs.toString().padStart(2, '0');
+        const secString = secs.toString().padStart(2, '0');
         $("#timer").text(`${mins}:${secString}`);
     }
 
@@ -145,8 +145,8 @@ class Main {
  * Processes the display timer. If timer is at 0, does nothing. Set to run every second in Main initialization.
  */
 function timerCountdown(): void {
-    let timerElement = $("#timer");
-    let timerText = timerElement.text().split(":");
+    const timerElement = $("#timer");
+    const timerText = timerElement.text().split(":");
     let mins = Number(timerText[0]);
     let secs = Number(timerText[1]);
     if(secs === 0) {
@@ -159,7 +159,7 @@ function timerCountdown(): void {
     } else {
         secs--;
     }
-    let stringSecs = secs.toString().padStart(2, "0");
+    const stringSecs = secs.toString().padStart(2, "0");
     timerElement.text(`${mins}:${stringSecs}`);
 }
 

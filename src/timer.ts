@@ -9,7 +9,7 @@ class Timer {
 
     init() {
         chrome.storage.local.get(['target']).then( (result) => {
-            if(typeof result !== "undefined") {
+            if(typeof result['target'] !== "undefined") {
                 this.targetTime = result['target'];
             }
         });
@@ -17,24 +17,23 @@ class Timer {
         chrome.runtime.onStartup.addListener(this.createOffscreen);
         this.createOffscreen().then();
 
-        let that = this;
-        chrome.alarms.onAlarm.addListener(function (alarm) {
+        chrome.alarms.onAlarm.addListener((alarm) => {
             if(alarm.name === 'timer') {
-                that.onTimer();
+                this.onTimer();
             }
         });
 
-        chrome.runtime.onMessage.addListener(function (message, sender) {
+        chrome.runtime.onMessage.addListener((message, sender) => {
             if(sender.url?.endsWith("main.html")) {
                 if(typeof message['target'] !== "undefined") {
-                    that.newTimer(message['target']);
+                    this.newTimer(message['target']);
                 }
             }
         });
     }
 
     newTimer(target: number) {
-        if(this.targetTime === -1) return;
+        if(this.targetTime !== -1) return;
         this.targetTime = target;
         chrome.storage.local.set({ target: target }).then();
 
