@@ -3,7 +3,7 @@
   "description": "this is a test.",
   "version": "0",
   "manifest_version": 3,
-  "permissions": ["alarms", "offscreen", "scripting", "storage"],
+  "permissions": ["alarms", "notifications", "offscreen", "scripting", "storage"],
   "action": {
     "default_popup": "./main.html"
   },

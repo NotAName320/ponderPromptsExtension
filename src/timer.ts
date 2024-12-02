@@ -44,6 +44,13 @@ class Timer {
     onTimer() {
         chrome.storage.local.remove("target").then();
         this.targetTime = -1;
+
+        chrome.notifications.create("timerReached", {
+            title: "Target Time Reached",
+            message: "The timer has hit 0.",
+            iconUrl: chrome.runtime.getURL("alarmRing.png"),
+            type: "basic"
+        });
     }
 
     async createOffscreen() {
