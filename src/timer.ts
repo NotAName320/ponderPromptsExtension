@@ -25,8 +25,15 @@ class Timer {
 
         chrome.runtime.onMessage.addListener((message, sender) => {
             if(sender.url?.endsWith("main.html")) {
-                if(typeof message['target'] !== "undefined") {
-                    this.newTimer(message['target']);
+                switch (message['action']) {
+                    case "startTimer":
+                        this.newTimer(message['target']);
+                        break;
+                    case "stopTimer":
+                        this.cancelTimer();
+                        break;
+                    default:
+                        break;
                 }
             }
         });
@@ -38,6 +45,13 @@ class Timer {
         chrome.storage.local.set({ target: target }).then();
 
         chrome.alarms.create('timer', { when: target }).then();
+    }
+
+    cancelTimer() {
+        this.targetTime = -1;
+
+        chrome.storage.local.remove("target").then();
+        chrome.alarms.clear("timer").then();
     }
 
     onTimer() {

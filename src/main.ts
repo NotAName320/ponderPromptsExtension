@@ -38,6 +38,7 @@ class Main {
             this.secBox[0].addEventListener("keydown", this.moveCursorBack);
             this.secBox[0].addEventListener("keydown", this.secondsMax);
             this.startButton[0].addEventListener("click", this.startTimer);
+            $("#stopButton")[0].addEventListener("click", this.stopTimer);
 
             $(".numeric").each((_, element) => {
                 element.addEventListener("keydown", this.evalNumeric);
@@ -126,10 +127,15 @@ class Main {
     startTimer(): void {
         const mins = Number($("#minutes").val());
         const secs = Number($("#seconds").val());
-        console.log(mins * 60 + secs);
-        chrome.runtime.sendMessage({target: Date.now() + (mins * 60 + secs) * 1000}).then();
+        chrome.runtime.sendMessage({ action: "startTimer", target: Date.now() + (mins * 60 + secs) * 1000}).then();
         const secString = secs.toString().padStart(2, '0');
         $("#timer").text(`${mins}:${secString}`);
+    }
+
+    stopTimer(): void {
+        chrome.runtime.sendMessage({ action: "stopTimer" }).then();
+        $("#timer").text("0:00");
+        $("#cancelText").show();
     }
 
     /**
