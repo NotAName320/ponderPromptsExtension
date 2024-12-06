@@ -11,13 +11,6 @@ const NUMERALS = new Set(["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]);
  * and establishes minimum and maximum values.
  */
 class Main {
-    // Initialize the class by setting up event listeners.
-    minBox: JQuery = $()
-    secBox: JQuery = $()
-    startButton: JQuery = $()
-    timerDisplay: JQuery = $()
-    timerUpdaterId: number = 0;
-
     constructor() {
         this.init();
     }
@@ -29,21 +22,19 @@ class Main {
      */
     init(): void {
         $(() => {
-            this.minBox = $("#minutes");
-            this.secBox = $("#seconds");
-            this.startButton = $("#startButton");
-            this.timerDisplay = $("#timer");
-
-            this.minBox[0].addEventListener("keydown", this.moveCursor);
-            this.secBox[0].addEventListener("keydown", this.moveCursorBack);
-            this.secBox[0].addEventListener("keydown", this.secondsMax);
-            this.startButton[0].addEventListener("click", this.startTimer);
+            // some ui logic
+            $("#minutes")[0].addEventListener("keydown", this.moveCursor);
+            $("#seconds")[0].addEventListener("keydown", this.moveCursorBack);
+            $("#seconds")[0].addEventListener("keydown", this.secondsMax);
+            $("#startButton")[0].addEventListener("click", this.startTimer);
             $("#stopButton")[0].addEventListener("click", this.stopTimer);
 
+            // ensure numeric values are typed into numeric inputs
             $(".numeric").each((_, element) => {
                 element.addEventListener("keydown", this.evalNumeric);
             });
 
+            // refill persistent data values
             $(".persist").each((_, element) => {
                 chrome.storage.local.get([element.id]).then((result) => {
                     if(typeof result[element.id] === "undefined") {
@@ -59,6 +50,7 @@ class Main {
             });
         });
 
+        // if target time in storage, set cosmetic timer to time
         chrome.storage.local.get(['target']).then( (result) => {
             if(typeof result['target'] !== "undefined") {
                 const timeDiff = Math.floor((result['target'] - Date.now()) / 1000);
@@ -67,7 +59,9 @@ class Main {
                 $("#timer").text(`${mins}:${secs}`);
             }
         });
-        this.timerUpdaterId = window.setInterval(() => timerCountdown(), 1000);
+
+        // start cosmetic timer effect
+        window.setInterval(() => timerCountdown(), 1000);
     }
 
 
