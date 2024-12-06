@@ -56,7 +56,7 @@ class Timer {
 
     onTimer() {
         chrome.storage.local.remove("target").then();
-        chrome.storage.local.set({ timerTriggered: true }).then();
+        chrome.storage.local.set({ timerTriggered: true, questionIndex: 0 }).then();
 
         this.targetTime = -1;
 

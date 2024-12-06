@@ -1,5 +1,7 @@
 import $ from 'jquery'
 
+import {questions} from "./questions";
+
 
 const FIRST_FIVE = new Set(["0", "1", "2", "3", "4", "5"]);
 const NUMERALS = new Set(["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]);
@@ -28,6 +30,7 @@ class Main {
             $("#seconds")[0].addEventListener("keydown", this.secondsMax);
             $("#startButton")[0].addEventListener("click", this.startTimer);
             $("#stopButton")[0].addEventListener("click", this.stopTimer);
+            $("#submitAnswerButton")[0].addEventListener("mouseup", this.advanceQuestion);
 
             // ensure numeric values are typed into numeric inputs
             $(".numeric").each((_, element) => {
@@ -67,6 +70,8 @@ class Main {
                 // chrome.storage.local.set({ timerTriggered: false }).then(); // comment this line out for persistency
                 // which is what we want for now
                 onTimer();
+            } else {
+                $("#timerPage").show();
             }
         })
 
@@ -148,6 +153,20 @@ class Main {
     storePersist(this: HTMLInputElement): void {
         chrome.storage.local.set({ [this.id]: this.value }).then();
     }
+
+    advanceQuestion(): void {
+        chrome.storage.local.get(['questionIndex']).then( (result) => {
+            console.log(result['questionIndex']);
+            if(result['questionIndex'] + 1 !== questions.length) {
+                $('#question').text(questions[result['questionIndex'] + 1]['questionText']);
+                chrome.storage.local.set({ questionIndex: result['questionIndex'] + 1}).then();
+            } else {
+                $('#questionsPage').hide();
+                $('#timerPage').show();
+                chrome.storage.local.set({ timerTriggered: false }).then();
+            }
+        });
+    }
 }
 
 /**
@@ -183,6 +202,12 @@ function timerCountdown(): void {
  */
 function onTimer(): void {
     console.log('this is working');
+    $('#timerPage').hide();
+    $('#questionsPage').show();
+
+    chrome.storage.local.get(['questionIndex']).then( (result) => {
+        $('#question').text(questions[result['questionIndex']]['questionText']);
+    });
 }
 
 // Instantiates the Main class to activate the event listeners
