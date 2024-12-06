@@ -60,6 +60,16 @@ class Main {
             }
         });
 
+        // do things if timer triggered while asleep
+        chrome.storage.local.get(['timerTriggered']).then((result) => {
+            // timerTriggered not undefined or false
+            if(result['timerTriggered']) {
+                // chrome.storage.local.set({ timerTriggered: false }).then(); // comment this line out for persistency
+                // which is what we want for now
+                onTimer();
+            }
+        })
+
         // start cosmetic timer effect
         window.setInterval(() => timerCountdown(), 1000);
     }
@@ -160,6 +170,19 @@ function timerCountdown(): void {
     }
     const stringSecs = secs.toString().padStart(2, "0");
     timerElement.text(`${mins}:${stringSecs}`);
+
+    // runs when timer hits 0 for the first time (since subsequent 0s will be dealt with by early return
+    // icky code cause repeating checks but it works, won't need further extension, and im too lazy to do it better
+    if(mins === 0 && secs === 0) {
+        onTimer();
+    }
+}
+
+/**
+ * Runs when the timer hits 0 and the user has the extension window open.
+ */
+function onTimer(): void {
+    console.log('this is working');
 }
 
 // Instantiates the Main class to activate the event listeners

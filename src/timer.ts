@@ -56,6 +56,8 @@ class Timer {
 
     onTimer() {
         chrome.storage.local.remove("target").then();
+        chrome.storage.local.set({ timerTriggered: true }).then();
+
         this.targetTime = -1;
 
         chrome.notifications.create("timerReached", {
