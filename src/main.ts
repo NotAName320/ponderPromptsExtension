@@ -154,15 +154,22 @@ class Main {
         chrome.storage.local.set({ [this.id]: this.value }).then();
     }
 
+    /**
+     * Code that executes when the user clicks the "submit question button"; submits to backend and then either goes to
+     * next question or timer page depending on place in list of questions.
+     */
     advanceQuestion(): void {
         chrome.storage.local.get(['questionIndex']).then( (result) => {
-            console.log(result['questionIndex']);
+            // if there exists a next question
             if(result['questionIndex'] + 1 !== questions.length) {
+                // show new question and increment in storage
                 $('#question').text(questions[result['questionIndex'] + 1]['questionText']);
                 chrome.storage.local.set({ questionIndex: result['questionIndex'] + 1}).then();
             } else {
+                // switch pages again
                 $('#questionsPage').hide();
                 $('#timerPage').show();
+                // tell storage that our state has changed back to timer page
                 chrome.storage.local.set({ timerTriggered: false }).then();
             }
         });
@@ -201,10 +208,11 @@ function timerCountdown(): void {
  * Runs when the timer hits 0 and the user has the extension window open.
  */
 function onTimer(): void {
-    console.log('this is working');
+    // switch to the questions page if not done already (should i make a function for this?)
     $('#timerPage').hide();
     $('#questionsPage').show();
 
+    // set question to the correct one
     chrome.storage.local.get(['questionIndex']).then( (result) => {
         $('#question').text(questions[result['questionIndex']]['questionText']);
     });
